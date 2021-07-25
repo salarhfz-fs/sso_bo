@@ -1,0 +1,10 @@
+.main_container {
+  padding: 0;
+}
+.notif {
+  position: fixed;
+  text-align: center;
+  width: 50%;
+  right: 50px;
+  bottom: 25px;
+}

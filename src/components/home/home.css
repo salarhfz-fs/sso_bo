@@ -1,0 +1,18 @@
+.main_pagination {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.main_pagination li {
+  display: inline-block;
+  margin-right: 5px;
+  background-color: chocolate;
+  padding: 5px 10px;
+  color: white;
+}
+.user_actions {
+  margin-right: 1rem;
+}
+.new_user {
+  text-align: center;
+}
