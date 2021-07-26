@@ -30,14 +30,17 @@ const EditUsermodal = ({
     if (validation_result.error) {
       setError(validation_result.error.message)
     } else {
+      setEmail(validation_result.value)
       validation_result = validators.username.validate(username)
       if (validation_result.error) {
         setError(validation_result.error.message)
       } else {
+        setUsername(validation_result.value)
         validation_result = validators.department.validate(department)
         if (validation_result.error) {
           setError(validation_result.error.message)
         } else {
+          setDepartment(validation_result.value)
           if (is_logged_in) {
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS_UPDATE}${user.id}`,
               {

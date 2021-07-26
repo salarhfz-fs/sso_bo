@@ -28,10 +28,12 @@ const ChangePasswordmodal = ({
     if (validation_result.error) {
       setError(validation_result.error.message)
     } else {
+      setPassword(validation_result.value)
       validation_result = validators.password.validate(repeat_password)
       if (validation_result.error) {
         setError(validation_result.error.message)
       } else {
+        setRepeatPassword(validation_result.value)
         if (password === repeat_password) {
           if (is_logged_in) {
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS_CHANGE_PASSWORD}${user.id}`,

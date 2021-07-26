@@ -29,10 +29,12 @@ const Login = () => {
     if (validation_result.error) {
       setError(validation_result.error.message)
     } else {
+      setEmail(validation_result.value)
       validation_result = validators.password.validate(password)
       if (validation_result.error) {
         setError(validation_result.error.message)
       } else {
+        setPassword(validation_result.value)
         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_LOGIN}`, {
           email,
           password
