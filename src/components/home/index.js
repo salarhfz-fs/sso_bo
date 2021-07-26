@@ -37,7 +37,7 @@ const Home = () => {
     async function fetchUsers() {
       if (is_logged_in) {
         if (initial_load_ref.current === true || should_refresh === true) {
-          const response = await axios.get(`${process.env.REACT_APP_BASE_URL}admins/users`, { headers: { "authorization": `Bearer ${token}` } })
+          const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS}`, { headers: { "authorization": `Bearer ${token}` } })
           if (response.status === 200) {
             if (response.data?.code === 200) {
               const new_users = response.data.data

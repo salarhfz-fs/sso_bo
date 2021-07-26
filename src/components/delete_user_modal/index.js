@@ -19,7 +19,7 @@ const DeleteUserModal = ({
 
   const handleSubmit = async () => {
     if (is_logged_in) {
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}admins/users/${user.id}`,
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS_DELETE}${user.id}`,
         { headers: { "authorization": `Bearer ${token}` } }
       )
       if (response.status === 200) {

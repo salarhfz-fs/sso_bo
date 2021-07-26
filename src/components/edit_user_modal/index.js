@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import * as validators from '../../business/validations'
 
 const EditUsermodal = ({
   show,
@@ -25,11 +26,20 @@ const EditUsermodal = ({
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    if (email) {
-      if (username) {
-        if (department) {
+    let validation_result = validators.email.validate(email)
+    if (validation_result.error) {
+      setError(validation_result.error.message)
+    } else {
+      validation_result = validators.username.validate(username)
+      if (validation_result.error) {
+        setError(validation_result.error.message)
+      } else {
+        validation_result = validators.department.validate(department)
+        if (validation_result.error) {
+          setError(validation_result.error.message)
+        } else {
           if (is_logged_in) {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}admins/users/update/${user.id}`,
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS_UPDATE}${user.id}`,
               {
                 username: username,
                 email: email,
@@ -93,15 +103,8 @@ const EditUsermodal = ({
           } else {
             history.push('/login')
           }
-
-        } else {
-          setError('Department is required')
         }
-      } else {
-        setError('Username is required')
       }
-    } else {
-      setError('Email is required')
     }
   }
 

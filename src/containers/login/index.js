@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import * as validators from '../../business/validations'
 
 import './login.css'
 
@@ -24,9 +25,15 @@ const Login = () => {
   }
 
   const handleLogin = async () => {
-    if (email?.length) {
-      if (password?.length) {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}admins/login`, {
+    let validation_result = validators.email.validate(email)
+    if (validation_result.error) {
+      setError(validation_result.error.message)
+    } else {
+      validation_result = validators.password.validate(password)
+      if (validation_result.error) {
+        setError(validation_result.error.message)
+      } else {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_LOGIN}`, {
           email,
           password
         })
@@ -62,17 +69,11 @@ const Login = () => {
           } else {
             setError(response.data.message)
           }
-        } else {
-          setError('Something went wrong! Please try again later...')
         }
-
-      } else {
-        setError('Password is required')
       }
-    } else {
-      setError('Email is required')
     }
   }
+
   return (
     <div className='login_form'>
       <Form>

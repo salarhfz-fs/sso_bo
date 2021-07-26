@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import * as validators from '../../business/validations'
 
 const NewUserModal = ({
   show,
@@ -26,14 +27,31 @@ const NewUserModal = ({
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    if (email) {
-      if (username) {
-        if (password) {
-          if (repeat_password) {
-            if (password === repeat_password) {
-              if (department) {
+    let validation_result = validators.email.validate(email)
+    if (validation_result.error) {
+      setError(validation_result.error.message)
+    } else {
+      validation_result = validators.username.validate(username)
+      if (validation_result.error) {
+        setError(validation_result.error.message)
+      } else {
+        validation_result = validators.password.validate(password)
+        if (validation_result.error) {
+          setError(validation_result.error.message)
+        } else {
+          validation_result = validators.password.validate(repeat_password)
+          if (validation_result.error) {
+            setError(validation_result.error.message)
+          } else {
+            if (password !== repeat_password) {
+              setError('Passwords should match')
+            } else {
+              validation_result = validators.department.validate(department)
+              if (validation_result.error) {
+                setError(validation_result.error.message)
+              } else {
                 if (is_logged_in) {
-                  const response = await axios.post(`${process.env.REACT_APP_BASE_URL}admins/users`,
+                  const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_ADMINS_USERS}`,
                     {
                       username: username,
                       email: email,
@@ -97,23 +115,11 @@ const NewUserModal = ({
                 } else {
                   history.push('/login')
                 }
-              } else {
-                setError('Department is required')
               }
-            } else {
-              setError('Passwords should match')
             }
-          } else {
-            setError('Repeat password is required')
           }
-        } else {
-          setError('Password is required')
         }
-      } else {
-        setError('Username is required')
       }
-    } else {
-      setError('Email is required')
     }
   }
 
